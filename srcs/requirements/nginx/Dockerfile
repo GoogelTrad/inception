@@ -12,4 +12,9 @@ RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/ngin
 
 #Config Nginx
 RUN mkdir -p /var/run/nginx
-COPY conf /etc/nginx/nginx.conf 
+COPY conf/nginx.conf /etc/nginx/nginx.conf 
+RUN chmod 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+
+#Lancement de NGINX
+#CMD [ "nginx", "-g", "daemon off;" ]
