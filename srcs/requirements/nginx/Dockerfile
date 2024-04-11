@@ -1,20 +1,11 @@
 FROM debian:buster
 
-#Packages to install
-RUN apt update
-RUN apt install nginx -y
-RUN apt install vim -y
-RUN apt install openssl -y
+RUN apt update -y
+RUN apt upgrade -y
+RUN apt install -y nginx
+RUN apt install -y openssl
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt -subj "/C=MO/L=KH/O=1337/OU=student/CN=cmichez.42.fr"
 
-#Config OpenSSL
-RUN mkdir -p /etc/nginx/ssl
-RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=login.42.fr/UID=login"
+COPY conf/nginx.conf /etc/nginx/sites-available/
 
-#Config Nginx
-RUN mkdir -p /var/run/nginx
-COPY conf/nginx.conf /etc/nginx/nginx.conf 
-RUN chmod 755 /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-
-#Lancement de NGINX
-CMD [ "nginx", "-g", "daemon off;" ]
+CMD [ "nginx -g daemon off;" ]
