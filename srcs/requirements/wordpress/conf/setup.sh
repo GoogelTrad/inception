@@ -18,9 +18,9 @@ wp core download --allow-root
 
 #change line in wpconfig to connect with the database
 mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
-sed -i -r "s/database/$db_name/1" wp-config.php
-sed -i -r "s/database_user/$db_user/1" wp-config.php
-sed -i -r "s/passwod/$db_pwd/1" wp-config.php
+sed -i -r "s/database/$MB_DATABASE/1" wp-config.php
+sed -i -r "s/database_user/$MB_USER/1" wp-config.php
+sed -i -r "s/passwod/$MB_PASSWORD/1" wp-config.php
 sed -i -r "s/localhost/mariadb/1" wp-config.php
 
 

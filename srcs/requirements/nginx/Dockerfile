@@ -10,6 +10,6 @@ RUN apt install -y openssl
 
 #with setup.sh
 COPY conf/setup.sh /
-
+RUN chmod 777 /setup.sh
 
 CMD [ "./setup.sh" ]

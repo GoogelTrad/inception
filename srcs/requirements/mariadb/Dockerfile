@@ -8,6 +8,7 @@ COPY conf/50-server.cnf	/etc/mysql/mariadb.conf.d/
 RUN chmod 0644 /etc/mysql/mariadb.conf.d/50-server.cnf
 
 COPY conf/setup.sh /
+COPY conf/init.sql /
 RUN chmod 777 /setup.sh
 
 CMD [ "./setup.sh" ]

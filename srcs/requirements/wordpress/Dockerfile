@@ -7,5 +7,6 @@ RUN apt install curl -y
 
 COPY ./conf/setup.sh /
 COPY ./conf/wp-config.php /
+RUN chmod 777 /setup.sh
 
 CMD [ "./setup.sh" ]

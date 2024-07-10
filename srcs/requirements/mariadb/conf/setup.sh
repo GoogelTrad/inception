@@ -1,13 +1,21 @@
 #!/bin/bash
 
-service mysql start 
 
+sed -i 's|MYSQL_DATABASE|'${MB_DATABASE}'|g' /init.sql
+sed -i 's|MYSQL_USER|'${MB_USER}'|g' /init.sql
+sed -i 's|MYSQL_PASSWORD|'${MB_PASSWORD}'|g' /init.sql
+sed -i 's|MYSQL_ROOT_PASSWORD|'${MB_ROOT_PASSWORD}'|g' /init.sql
 
-echo "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;" > db.sql
-echo "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'localhost' IDENTIFIED BY '${SQL_PASSWORD}';" >> db.sql
-echo "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO \`${SQL_USER}\`@'%' IDENTIFIED BY '${SQL_PASSWORD}';" >> db.sql
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';" >> db.sql
-echo "FLUSH PRIVILEGES;" >> db.sql
+if [ -d "/var/lib/mysql/$MB_DATABASE" ]
 
-mysql < db.sql
-mysqld
+then
+  echo "Database already exists."
+  mysqld_safe
+
+else
+  mysql_install_db
+  mysqld --init-file="/init.sql"
+
+fi
+
+exec "$@"
