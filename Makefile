@@ -1,5 +1,11 @@
-all:
+
+volumes= ~/goinfre/data/www ~/goinfre/data/database
+
+all: setup
 	@docker compose -f srcs/docker-compose.yml up --build
+
+setup:
+	@mkdir -p $(volumes)
 
 down:
 	@docker compose -f srcs/docker-compose.yml down

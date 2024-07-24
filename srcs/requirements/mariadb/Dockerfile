@@ -4,11 +4,13 @@ RUN apt update -y
 RUN apt upgrade -y
 RUN apt-get install mariadb-server -y
 
-COPY conf/50-server.cnf	/etc/mysql/mariadb.conf.d/
-RUN chmod 0644 /etc/mysql/mariadb.conf.d/50-server.cnf
 
-COPY conf/setup.sh /
-COPY conf/init.sql /
-RUN chmod 777 /setup.sh
+RUN mkdir /var/lib/mysqld && chmod 777 /var/lib/mysqld
+RUN mkdir /var/run/mysqld && chmod 777 /var/run/mysqld
 
-CMD [ "./setup.sh" ]
+COPY ./conf/default.cnf /etc/mysql/my.cnf
+COPY ./conf/setup.sh ./
+
+RUN chmod +x ./setup.sh
+
+CMD ["mysqld_safe", "--log-error=er.log"]
